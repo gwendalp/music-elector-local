@@ -17,20 +17,37 @@ Poll.remove({})
                 topic: topics[i],
                 choices: [
                     {
-                        value: "Like a Rolling Stone",
+                        value: "Like a Rolling Stone - Bob Dylan",
                         votes: 0
                     },
                     {
-                        value: "(I Can't Get No) Satisfaction",
+                        value: "Breakfast in America - Supertramp",
                         votes: 0
                     },
                     {
-                        value: "Breakfast in America",
+                        value: "The Less I Know The Better- Tame Impale",
                         votes: 0
-                    }
+                    },
+                    {
+                        value: "Hallelujah - Leonard Cohen",
+                        votes: 0
+                    },
                     
-
-
+                    {
+                        value: "Rappel - Vald",
+                        votes: 0
+                    },
+                    
+                    {
+                        value: "Numb - Linkin Park",
+                        votes: 0
+                    },
+                    
+                    {
+                        value: "Whiskey in the Jar - The Dubliners",
+                        votes: 0
+                    },
+                    
 
                     
 

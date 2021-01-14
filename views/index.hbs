@@ -34,37 +34,30 @@
 </div>
 
 
-<div>
-<button id="myButton">Results</button>
-<p id="counter">Push the button to get the results.</p>
-</div>
-
-<form action="/play">
-    <button>Play the song</button>
-</form>
 
 
-
-
-<div>
-
-<form method='GET' action="/getsong">
+<div class="row" style="margin-bottom:20px; width:300px; margin:auto" >
+<form method='GET' action="/getsong" class="normform">
         <div class="container">
-            <div class="prompt left-pane">
-                <span>Give us your favourite song</span>
-            </div>
-            <div class="right-pane">
-                <input type="text" id="song" name="song" />
+            
+            <div class="right-pane" style="margin-bottom:20px; width:300px;">
+                <input type="text" id="song" name="song" placeholder="Your song ..."/>
             </div>
         </div>
         <div class="submit-name">
-            <input type="submit" value="add the song" />
+            <input type="submit" value="Add the song" />
         </div>
         </div>
     </form>
+</div>
 
-
-
+<div class="row" style="margin-top:10px; margin-bottom:10px;">
+</div>
+<div class="row" style="margin-top:20px; width:300px; margin: auto">
+<form action="/play" class="normform">
+    {{!-- <button>Play the song</button> --}}
+    <input type="submit" value="Play the song" />
+</form>
 </div>
 
 

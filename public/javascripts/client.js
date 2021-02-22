@@ -35,29 +35,18 @@ seedButton.addEventListener('click', function(e) {
 
 
 
-  const playButton = document.getElementById('playButton');
-  playButton.addEventListener('click', async function(e) {
-    console.log('Playbutton was clicked');
-    
-    try {
-      const response = await fetchWithTimeout('/play', {
-        timeout: 500
-      });
-      const data = await response.json();
+
+
+    const playButton = document.getElementById('playButton');
+    playButton.addEventListener('click', function(e) {
+      console.log('Playbutton was clicked');
+      fetch('/play')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
       window.open(data.url, '_blank');
-      console.log(data.url)
-      return games;
-
-
-    } catch (error) {
-      // Timeouts if the request takes
-      // longer than 6 seconds
-      if(error.name =='AbortError'){
-        snack()
-      }
+    })
       
-
-    }
-
-    });
-
+      });
+  

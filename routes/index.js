@@ -173,9 +173,9 @@ router.post('/seed', (req, res) => {
   });
 
 
+  router.get('/play', (req, res) => {
 
-  router.get('/play', function(req, res){
-    dbo.collection('polls').find({topic: 'Which music should be played next?'}).toArray((err, result) => {
+    mongoose.connection.collection('polls').find({topic: 'Which music should be played next?'}).toArray((err, result) => {
       if (err) return console.log(err);
       
       val = callback(result);
@@ -184,9 +184,9 @@ router.post('/seed', (req, res) => {
   
   
     });
+  // test
   
-  
-    spotifyApi
+  spotifyApi
   .clientCredentialsGrant()
   .then(function(data) {
     
@@ -202,8 +202,8 @@ router.post('/seed', (req, res) => {
     // Go through the first page of results
     var firstPage = data.body.tracks.items;
     if (firstPage[0].preview_url != null)
-      {res.send({url: firstPage[0].preview_url})}
-      else{res.send({url: 'https://open.spotify.com/embed/track/' + firstPage[0].id})}
+      {res.send({url :firstPage[0].preview_url})}
+      else{res.send({url:'https://open.spotify.com/embed/track/' + firstPage[0].id})}
     //res.redirect(firstPage[0].preview_url)
     
   }).catch(function(err) {
@@ -211,9 +211,7 @@ router.post('/seed', (req, res) => {
   });
   
   
-    
-    
-});
+  })
 
 
   

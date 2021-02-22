@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
-
+module.exports = {
+seed:function(){
 require('mongoose').connect('mongodb://localhost/pollser');
 
 const topics = [
     "Which music should be played next?"
 ];
 
-const Poll = require('../models/poll');
+const Poll = require('./models/poll');
 
 // empty the collection first
 Poll.remove({})
@@ -57,10 +58,8 @@ Poll.remove({})
         }
         return Poll.create(polls);
     })
-    .then(() => {
-        process.exit();
-    })
-    .catch((e) => {
-        console.log(e);
-        process.exit(1);
-    });
+    
+}
+
+
+}

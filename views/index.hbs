@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" style="margin: auto;">
 
     {{#each polls }}
-        <div class="col-md-6">
+        <div class="col-md-6" style="margin: auto;">
             <form onsubmit="vote(event);" id="{{this._id}}">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -9,7 +9,7 @@
                             <span class="glyphicon glyphicon-arrow-right"></span>{{ this.topic }}
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body"style="margin: auto;">
                         <ul class="list-group">
                             {{#each this.choices }}
                                 <li class="list-group-item">
@@ -24,7 +24,7 @@
                             {{/each}}
                         </ul>
                     </div>
-                    <div class="panel-footer">
+                    <div class="panel-footer"style="margin: auto;">
                         <input type="submit" id="vote-btn-{{this.id}}" class="btn btn-primary btn-sm" value="Vote">
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 
 
 <div class="row" style="margin-bottom:20px; width:300px; margin:auto" >
-<form method='GET' action="/getsong" class="normform">
+<form method='GET' action="/getsong" class="normform" onsubmit="process()">
         <div class="container">
             
             <div class="right-pane" style="margin-bottom:20px; width:300px;">
@@ -51,20 +51,32 @@
     </form>
 </div>
 
+
+
 <div class="row" style="margin-top:10px; margin-bottom:10px;">
 </div>
-<div class="row" style="margin-top:20px; width:300px; margin: auto">
-<form action="/play" class="normform">
-    {{!-- <button>Play the song</button> --}}
-    <input type="submit" value="Play the song" />
-</form>
+
+<div  class="row" style="margin-top:20px; width:300px; margin: auto">
+<button id="playButton" class="custom2" style="margin:  auto;" > Play the most elected song</button>
 </div>
 
 
-
+<div class="row" style="margin-top:10px; margin-bottom:10px;">
 </div>
+
+<div  class="row" style="margin-top:20px; width:300px; margin: auto">
+<button id="seedButton" class="custom" style="margin:  auto;" > Reset </button>
+</div>
+
+<div id="snackbar">The song does not exist ! Please elect another song </div>
+
+
+
+
+
 
 <script src="javascripts/client.js"></script>
+
 
 
 

@@ -3,6 +3,7 @@ let router = require('express').Router();
 
 let Poll = require('./../models/poll');
 
+var tools = require('./../seedTool')
 
 const SpotifyWebApi = require('../src/server');
 
@@ -35,6 +36,8 @@ router.get('/', (req, res, next) => {
 
 let dbo;
 const MongoClient = require('mongodb').MongoClient;
+const { seed } = require('./../seedTool');
+const { response } = require('express');
 const url = 'mongodb://localhost:27017/';
 
 
@@ -91,13 +94,13 @@ router.post('/clicked', (req, res) => {
   });
   });
   
-  router.get("/getsong", function (request, response){
-    var song = request.query.song;
 
-    if (song != "") {
+  async function processQuery(song, response)
+  {
+    try {
+
+        const res = await querytest(song)
         console.log("The song you choose is " + song);
-        
-        
         var myquery = {topic: "Which music should be played next?" };
         var newvalues = { $push: {choices: {value: song, votes: 0}}};
         dbo.collection("polls").updateOne(myquery, newvalues, function(err, res) {
@@ -106,20 +109,37 @@ router.post('/clicked', (req, res) => {
         response.redirect('/');
         }); 
 
+    } catch (err) {
+      console.log(err)
+      response.send("Please Provide the right song and band! Format is song-band !")
+      
+    }
+  }
 
-    } else {
+  router.get("/getsong", function (request, response){
+    var song = request.query.song;
+
+    if (song != "") {
+        
+        processQuery(song,response)
+        }
+     
+     else {
         console.log("Please provide us a song");
     }
 });
 
 
 
-router.get('/play', (req, res) => {
 
-  dbo.collection('polls').find({topic: 'Which music should be played next?'}).toArray((err, result) => {
-    if (err) return console.log(err);
-    
-    val = callback(result);
+
+
+router.post('/seed', (req, res) => {
+    console.log('server received the click');
+    tools= require('./../seedTool');
+    tools.seed();
+    res.redirect('/')
+  
 
     
 
@@ -127,34 +147,68 @@ router.get('/play', (req, res) => {
   });
 
 
-  spotifyApi
-.clientCredentialsGrant()
-.then(function(data) {
-  
-  spotifyApi.setAccessToken(data.body['access_token']);
 
-  // Use the access token to retrieve information about the user connected to it
+  router.get('/play', function(req, res){
+    dbo.collection('polls').find({topic: 'Which music should be played next?'}).toArray((err, result) => {
+      if (err) return console.log(err);
+      
+      val = callback(result);
   
-  return spotifyApi.searchTracks(val);
-})
-.then(function(data) {
-  // Print some information about the results
-
-  // Go through the first page of results
-  var firstPage = data.body.tracks.items;
-  if (firstPage[0].preview_url != null)
-    {res.redirect(firstPage[0].preview_url)}
-    else{res.redirect('https://open.spotify.com/embed/track/' + firstPage[0].id)}
-  //res.redirect(firstPage[0].preview_url)
+      
   
-}).catch(function(err) {
-  console.log('Something went wrong:', err.message);
+  
+    });
+  
+  
+    spotifyApi
+  .clientCredentialsGrant()
+  .then(function(data) {
+    
+    spotifyApi.setAccessToken(data.body['access_token']);
+  
+    // Use the access token to retrieve information about the user connected to it
+    
+    return spotifyApi.searchTracks(val);
+  })
+  .then(function(data) {
+    // Print some information about the results
+  
+    // Go through the first page of results
+    var firstPage = data.body.tracks.items;
+    if (firstPage[0].preview_url != null)
+      {res.send({url: firstPage[0].preview_url})}
+      else{res.send({url: 'https://open.spotify.com/embed/track/' + firstPage[0].id})}
+    //res.redirect(firstPage[0].preview_url)
+    
+  }).catch(function(err) {
+    console.log('Something went wrong:', err.message);
+  });
+  
+  
+    
+    
 });
 
 
-})
   
- 
+function querytest(song)
+{
+  return new Promise((resolve, reject) => {
+  spotifyApi
+  .clientCredentialsGrant()
+  .then(function(data) {
+    spotifyApi.setAccessToken(data.body['access_token']);
+    return spotifyApi.searchTracks(song);
+  })
+.then(function(data) {
+  var firstPage = data.body.tracks.items;
+  if(firstPage[0] == null)
+  {
+     reject('song not in the database')
+  }
+  else {resolve('song is in the database')}
+})})
 
+}
 
 module.exports = router;

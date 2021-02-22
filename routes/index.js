@@ -129,7 +129,7 @@ router.post('/clicked', (req, res) => {
         console.log("The song you choose is " + song);
         var myquery = {topic: "Which music should be played next?" };
         var newvalues = { $push: {choices: {value: song, votes: 0}}};
-        dbo.collection("polls").updateOne(myquery, newvalues, function(err, res) {
+        mongoose.connection.collection("polls").updateOne(myquery, newvalues, function(err, res) {
         if (err) throw err;
         console.log("1 document updated");
         response.redirect('/');

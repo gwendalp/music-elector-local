@@ -35,13 +35,13 @@ router.get('/', (req, res, next) => {
 }); 
 
 let dbo;
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 const { seed } = require('./../seedTool');
 const { response } = require('express');
-const url = 'mongodb://localhost:27017/';
+// const url = 'mongodb://localhost:27017/';
 
 
-// DATABASE  
+/* // DATABASE  
 
 MongoClient.connect(url, (err, database) => {
   if(err) {
@@ -50,6 +50,32 @@ MongoClient.connect(url, (err, database) => {
   dbo = database.db("pollser");
   console.log("Connected to the database")
 });
+ */
+
+const mongoose = require('mongoose')
+
+
+const options = {
+  autoIndex: false, // Don't build indexes
+  reconnectTries: 30, // Retry up to 30 times
+  reconnectInterval: 500, // Reconnect every 500ms
+  poolSize: 10, // Maintain up to 10 socket connections
+  // If not connected, return errors immediately rather than waiting for reconnect
+  bufferMaxEntries: 0
+}
+const connectWithRetry = () => {
+  console.log('MongoDB connection with retry')
+  mongoose.connect("mongodb://mongo:27017/pollser", options).then(()=>{
+  //var connection = mongoose.connection;
+  console.log('MongoDB is connected')
+    
+  }).catch(err=>{
+    console.log('MongoDB connection unsuccessful, retry after 5 seconds.')
+    setTimeout(connectWithRetry, 5000)
+  })
+  }
+
+connectWithRetry()
 
 
 var callback = function(res)
